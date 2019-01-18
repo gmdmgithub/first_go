@@ -64,11 +64,15 @@ func main() {
 
 	fmt.Println(person2.sayHello())
 	person.addYear()
-	fmt.Println(person)
+	fmt.Printf("Person %v\n", person)
+	fmt.Printf("Person with keys %+v\n", person)
+	fmt.Printf("Person representation %#v\n", person)
+	fmt.Printf("Person representation city %#v\n", person.city)
+	fmt.Printf("Person type %T\n", person)
 
 	volvo := Car{"VXC", 4}
 	mtb := Bike{2, "Bike", true}
 
-	fmt.Printf("Car has %d weels\n", getWeels(volvo))
+	fmt.Printf("Car has %v weels\n", getWeels(volvo))
 	fmt.Printf("Bike has %d weels\n", getWeels(mtb))
 }
