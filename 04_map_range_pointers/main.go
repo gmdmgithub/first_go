@@ -1,12 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+	"time"
+)
 
 func main() {
+	start := time.Now()
 	fmt.Println("Hi there use me")
 	mapFunc()
 	rangeFunc()
 	pointerFunc()
+	fmt.Println(time.Since(start))
 }
 
 func mapFunc() {
@@ -34,6 +40,8 @@ func mapFunc() {
 	//new map defined at creation
 	scores := map[string]int{"adam": 20, "mark": 28, "greg": 60}
 	scores["john"] = 11
+	//resp, err := http.Get("https//www.google.com")
+	http.Get("https//www.google.com")
 	fmt.Println(scores)
 
 }
