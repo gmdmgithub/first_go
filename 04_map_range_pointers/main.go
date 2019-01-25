@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
@@ -43,6 +44,7 @@ func mapFunc() {
 	//resp, err := http.Get("https//www.google.com")
 	http.Get("https//www.google.com")
 	fmt.Println(scores)
+	log.Fatalf("INFO from LOG %s", scores)
 
 }
 
