@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
-// Define person struct
+// Person - simple person struct
 type Person struct {
 	firstName, lastName string
 	city                string
@@ -14,41 +15,55 @@ type Person struct {
 }
 
 //value reciever
-func (person Person) sayHello() string {
-	return "Hi there it's " + person.firstName + " and my age is " + strconv.Itoa(person.age)
+func (p Person) sayHello() string {
+	return "Hi there it's " + p.firstName + " and my age is " + strconv.Itoa(p.age)
 }
 
-//pointer reciever
+// pointer reciever
 func (p *Person) addYear() {
 	p.age++
 }
 
-//interface
+// Vehicle - define interface with method
 type Vehicle interface {
-	nweels() int
+	weelNumber() int
 }
 
+// Car - simple car struct
 type Car struct {
 	name  string
 	weels int
 }
 
+// Bike - simple bike struct
 type Bike struct {
 	weels   int
 	name    string
 	handars bool
 }
 
-func (c Car) nweels() int {
+func (c Car) weelNumber() int {
 	return c.weels
 }
 
-func (b Bike) nweels() int {
+func (b Bike) weelNumber() int {
 	return b.weels
 }
 
 func getWeels(v Vehicle) int {
-	return v.nweels()
+	return v.weelNumber()
+}
+
+// explain - shows the strength of interface and dynamic type
+func explain(i interface{}) {
+	switch i.(type) {
+	case string:
+		fmt.Println("i stored string ", strings.ToUpper(i.(string)))
+	case int:
+		fmt.Println("i stored int", i)
+	default:
+		fmt.Printf("i stored something else type: %T\n", i)
+	}
 }
 
 func main() {
@@ -75,4 +90,10 @@ func main() {
 
 	fmt.Printf("Car has %v weels\n", getWeels(volvo))
 	fmt.Printf("Bike has %d weels\n", getWeels(mtb))
+
+	explain("Hello World")
+	explain(52)
+	explain(true)
+	explain(43.2)
+	explain(3 + 2i)
 }
