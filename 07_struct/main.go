@@ -66,6 +66,29 @@ func explain(i interface{}) {
 	}
 }
 
+// Shape - simple interface for shape
+type Shape interface {
+	Area() float64
+	Perimeter() float64
+}
+
+// Rect - sctrutc of rectangle
+type Rect struct {
+	width  float64
+	height float64
+}
+
+// Area - rectangle implements Area - meas's its shape interface
+// IMPORTANT implement one of the interface struct becoms interface depended and have implement all intreface methods
+func (r Rect) Area() float64 {
+	return r.width * r.height
+}
+
+// Perimeter - calculate peremiter
+func (r Rect) Perimeter() float64 {
+	return r.width*2 + r.height*2
+}
+
 func main() {
 	fmt.Println("Hi there!")
 	person := Person{firstName: "Anna", lastName: "Smith", city: "NY", gender: "f", age: 27}
@@ -96,4 +119,10 @@ func main() {
 	explain(true)
 	explain(43.2)
 	explain(3 + 2i)
+
+	var s Shape
+	s = Rect{5.0, 4.0}
+	r := Rect{5.0, 4.0}
+	fmt.Println("area of rectange s", s.Area())
+	fmt.Println("peremiter of rectange t", r.Area())
 }
