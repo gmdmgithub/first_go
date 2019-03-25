@@ -16,7 +16,7 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 
 // isAuthorized - check if request is authorized
 func isAuthorized(endpoinToCkeck func(http.ResponseWriter, *http.Request)) http.Handler {
-	fmt.Println("Autorizition check is working ...")
+	log.Printf("Autorizition check is working ...")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		log.Printf("Server retriving ...")
@@ -34,6 +34,8 @@ func isAuthorized(endpoinToCkeck func(http.ResponseWriter, *http.Request)) http.
 				fmt.Fprintf(w, err.Error())
 			}
 			if token.Valid {
+				log.Printf("Token value %v", token.Claims.(jwt.MapClaims)["client"])
+				fmt.Fprintf(w, "Token value %v\n", token.Claims.(jwt.MapClaims)["client"])
 				endpoinToCkeck(w, r)
 			}
 		} else {
