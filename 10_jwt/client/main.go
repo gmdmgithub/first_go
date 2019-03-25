@@ -9,7 +9,19 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	validator "gopkg.in/go-playground/validator.v9"
 )
+
+// User - struct to keep data about user
+type User struct {
+	ID        string `json:"id" validate:"omitempty,uuid"`
+	FirstName string `json:"first_name" validate:"required"`
+	LastName  string `json:"last_name" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
+	Username  string `json:"username" validate:"required,gte=8"`
+	Password  string `json:"password" validate:"required,gte=5"`
+	Type      string `json:"type" validate:"required,gte=3"`
+}
 
 var mySignedKey = []byte("testmeifyoucanorjustuseown")
 
@@ -19,8 +31,19 @@ func GenerateJWT() (string, error) {
 
 	claimes := token.Claims.(jwt.MapClaims)
 
+	user := User{"1234", "Alex", "Smith", "alex.smith@gmail.com", "alexsmith", "password", "admin"}
+
+	validate := validator.New()
+	err := validate.Struct(user)
+	if err != nil {
+		log.Println(err.Error())
+	} else {
+		log.Println("Validation passed!")
+	}
+
 	claimes["authorized"] = true
 	claimes["client"] = "Alex Smith"
+	claimes["user"] = user
 	claimes["exp"] = time.Now().Add(time.Minute * 30).Unix()
 
 	tokenString, err := token.SignedString(mySignedKey)

@@ -35,7 +35,7 @@ func isAuthorized(endpoinToCkeck func(http.ResponseWriter, *http.Request)) http.
 			}
 			if token.Valid {
 				log.Printf("Token value %v", token.Claims.(jwt.MapClaims)["client"])
-				fmt.Fprintf(w, "Token value %v\n", token.Claims.(jwt.MapClaims)["client"])
+				fmt.Fprintf(w, "Token value %v\n", token.Claims.(jwt.MapClaims)["user"])
 				endpoinToCkeck(w, r)
 			}
 		} else {
