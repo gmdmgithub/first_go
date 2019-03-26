@@ -66,19 +66,23 @@ func postWithHeader(url string) {
 
 }
 
-func retriveResponse(response *http.Response, err error) {
+func retriveResponse(response *http.Response, err error) string {
 
 	if err != nil {
 		log.Printf("Post sample post problem %v\n", err)
+		return fmt.Sprintf("%s", err)
 	} else {
 		result, err := ioutil.ReadAll(response.Body)
 
 		if err != nil {
-			fmt.Printf("The HTTP request failed with error %s\n", err)
+			log.Printf("The HTTP request failed with error %s\n", err)
+			return fmt.Sprintf("%s", err)
 		} else {
 			fmt.Println(string(result))
+			return string(result)
 		}
 	}
+
 }
 
 func main() {
