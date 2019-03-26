@@ -18,7 +18,7 @@ type User struct {
 	FirstName string `json:"first_name" validate:"required"`
 	LastName  string `json:"last_name" validate:"required"`
 	Email     string `json:"email" validate:"required,email"`
-	Username  string `json:"username" validate:"required,gte=8"`
+	Username  string `json:"username" validate:"required,gte=10"`
 	Password  string `json:"password" validate:"required,gte=5"`
 	Type      string `json:"type" validate:"required,gte=3"`
 }
@@ -31,7 +31,8 @@ func GenerateJWT() (string, error) {
 
 	claimes := token.Claims.(jwt.MapClaims)
 
-	user := User{"1234", "Alex", "Smith", "alex.smith@gmail.com", "alexsmith", "password", "admin"}
+	user := User{"bc4267fb-a38a-4b4a-9f98-172f0416bccb",
+		"Alex", "Smith", "alex.smith@gmail.com", "alexsmith", "password", "admin"}
 
 	validate := validator.New()
 	err := validate.Struct(user)
@@ -39,6 +40,14 @@ func GenerateJWT() (string, error) {
 		log.Println(err.Error())
 	} else {
 		log.Println("Validation passed!")
+	}
+
+	//validate part
+	err = validate.StructExcept(user, "Password", "Type")
+	if err != nil {
+		log.Printf("Partial validation problem %v\t", err.Error())
+	} else {
+		log.Println("Partial validation passed!")
 	}
 
 	claimes["authorized"] = true
@@ -49,7 +58,7 @@ func GenerateJWT() (string, error) {
 	tokenString, err := token.SignedString(mySignedKey)
 
 	if err != nil {
-		err = fmt.Errorf("Something went wrong ... %s", err.Error())
+		err = fmt.Errorf("omething went wrong ... %s", err.Error())
 		return "", err
 	}
 
