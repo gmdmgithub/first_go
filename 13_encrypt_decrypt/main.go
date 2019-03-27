@@ -1,5 +1,7 @@
 package main
 
+// Encrypting and decrypting data
+
 import (
 	"crypto/aes"
 	"crypto/cipher"
@@ -8,7 +10,12 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"time"
 )
+
+// secretKey (key) parameter must be 16, 24 or 32, corresponding to the AES-128, AES-192 or AES-256 algorithms, respectively
+// AES stands for Advanced Encryption Standard
+var secretKey = []byte("this-is-the-most-secret-key-ever")
 
 func encrypt(data, secretKey []byte) ([]byte, error) {
 
@@ -64,9 +71,6 @@ func getGCM(secretKey []byte) (cipher.AEAD, error) {
 	return gcm, nil
 }
 
-// secretKey (key) parameter must be 16, 24 or 32, corresponding to the AES-128, AES-192 or AES-256 algorithms, respectively
-var secretKey = []byte("this-is-the-most-secret-key-ever")
-
 func main() {
 
 	fmt.Println("welcome to the encrypt decrypt playground, the most opinioated AES (Advanced Encription Standard) is used")
@@ -84,4 +88,9 @@ func main() {
 		log.Fatal(err) // TODO: Properly handle error
 	}
 	fmt.Printf("Decrypted text: %x and encrypted is: %s\n", ciphertext, plaintext)
+
+	//ltes write a file and decrypt it!
+	encryptFile("test.txt", textToEnrypt, secretKey)
+	time.Sleep(2 * time.Second)
+	fmt.Printf("Secret data from file are: %s", decryptFile("test.txt", secretKey))
 }
