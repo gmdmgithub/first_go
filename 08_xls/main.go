@@ -18,7 +18,17 @@ func main() {
 	fmt.Println(cell)
 
 	// Get all the rows in the tab - name data.
+	// rows is two-dimensional string array - [][]string - rows/cells
 	rows := xlsx.GetRows("data")
+
+	//sample form snipped
+	// for _, row := range xlsx.GetRows("Sheet1") {
+	// 	for _, colCell := range row {
+	// 		fmt.Print(colCell, "\t")
+	// 	}
+	// 	fmt.Println()
+	// }
+
 	// fmt.Println(xlsx.GetCellValue("data", "A1"))
 	var firstCol []int
 	var secondCol []int
