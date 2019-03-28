@@ -9,4 +9,8 @@ func main() {
 	chcekBlocking()
 
 	procesInfiniteWait()
+
+	blockingChannel()
+
+	uniChannelPalyground()
 }

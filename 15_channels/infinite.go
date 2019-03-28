@@ -12,6 +12,9 @@ func putToChannel(c chan int, num int) {
 		time.Sleep(100 * time.Millisecond)
 	}
 
+	time.Sleep(1 * time.Second)
+	c <- 1000 //joke ;-)
+
 	close(c)
 }
 
