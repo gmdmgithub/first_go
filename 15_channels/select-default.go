@@ -36,3 +36,57 @@ func selectDefault() {
 	fmt.Println("main() stopped", time.Since(start))
 	fmt.Println("\n#######################\nHi there select finished here!")
 }
+
+func serviceRoroutine(c chan string) {
+	c <- "My name is Alex"
+}
+
+func selectWitGoroutine() {
+
+	fmt.Println("\n#######################\nHi there, selectWitGoroutine starts here!")
+
+	// var channel chan string
+	channel := make(chan string)
+
+	go serviceRoroutine(channel)
+
+	time.Sleep(10 * time.Millisecond)
+
+	select {
+	case res := <-channel:
+		fmt.Printf("Channel has a value: %v\n", res)
+
+	default:
+		fmt.Println("Channel has no value")
+	}
+
+	fmt.Println("\nHi there, selectWitGoroutine finish here!\n#######################")
+}
+
+func serviceWithDelay(c chan string, delay int) {
+
+	time.Sleep(time.Duration(delay) * time.Second)
+	c <- fmt.Sprintf("Alex here! - simulate %d sec delay", delay)
+}
+
+func playingWithTimeout() {
+
+	fmt.Println("\n#######################\nHi there, playingWithTimeout starts here! - very useful!!")
+
+	channnel1 := make(chan string)
+	channnel2 := make(chan string)
+
+	go serviceWithDelay(channnel1, 3)
+	go serviceWithDelay(channnel2, 1)
+
+	select {
+	case res := <-channnel1:
+		fmt.Printf("Good job channle1 you are on time! You are: %s\n", res)
+	case res := <-channnel2:
+		fmt.Printf("Good job channle2 you are on time! You are: %s\n", res)
+	case <-time.After(2 * time.Second):
+		fmt.Println("No answer time-out and bye bye!")
+	}
+
+	fmt.Println("\n#######################\nHi there, playingWithTimeout ends here! - bye!")
+}
