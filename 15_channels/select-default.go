@@ -1,3 +1,4 @@
+// select is used where you needed only one conditions to be true
 package main
 
 import (

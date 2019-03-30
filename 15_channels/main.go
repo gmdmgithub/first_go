@@ -21,4 +21,8 @@ func main() {
 	selectWitGoroutine()
 
 	playingWithTimeout()
+
+	waitForAllGoroutines()
+
+	workerPoolPlaygound()
 }
