@@ -18,11 +18,13 @@ func main() {
 
 	// selectDefault()
 
-	selectWitGoroutine()
+	// selectWitGoroutine()
 
-	playingWithTimeout()
+	// playingWithTimeout()
 
-	waitForAllGoroutines()
+	// waitForAllGoroutines()
 
-	workerPoolPlaygound()
+	// workerPoolPlaygound()
+
+	perfromMutex()
 }
