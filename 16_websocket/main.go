@@ -24,12 +24,19 @@ func main() {
 		s.Emit("Hi there")
 		return nil
 	})
-	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
-		fmt.Println("notice:", msg)
+	server.OnEvent("/chat", "reply", func(s socketio.Conn, msg string) {
+		fmt.Println("Chat notice:", msg)
+		s.Emit("reply", "have "+msg)
+	})
+
+	//first is context (namespace), second is message
+	server.OnEvent("/room", "reply", func(s socketio.Conn, msg string) {
+		fmt.Println("rooom notice:", msg)
 		s.Emit("reply", "have "+msg)
 	})
 
 	server.OnEvent("/chat", "msg", func(s socketio.Conn, msg string) string {
+		log.Printf("msg from socket event %s", msg)
 		s.SetContext(msg)
 		return "recv " + msg
 	})

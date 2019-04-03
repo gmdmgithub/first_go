@@ -14,18 +14,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
 
-        var socket = io.connect('http://localhost:8080/socket.io/');
+        // var socket = io.connect('http://localhost:8080/socket.io/');
+        // first parameter set the context
+        var socket = io.connect('/chat');
+        //we can create as many socket as many context we have
+        var socket_room = io.connect("/room");
 
+        //message after context
         socket.on('reply', function(msg){
-            console.log(msg);
+            console.log(`Here is an aswer from backend - chat context! ${msg}`);
         });
+
+        //message after context
+        socket_room.on('reply', function(msg){
+            console.log(`Here is an aswer from backend - room! ${msg}`);
+        });
+
         socket.on('bye', function(msg){
             console.log(msg);
         });
 
-        socket.emit('news','second', function(){
-            console.log('tst');
-        })
+        socket.emit('msg','Hi there! beatuful message from front end')
+        
     </script>
 
 </body>
