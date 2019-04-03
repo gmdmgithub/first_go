@@ -31,7 +31,7 @@ func perfromMutex() {
 
 	for j := 0; j < 1500; j++ {
 		wg.Add(1)
-		go makeWork(&wg, &mutex, treu)
+		go makeWork(&wg, &mutex, true)
 	}
 
 	wg.Wait()
