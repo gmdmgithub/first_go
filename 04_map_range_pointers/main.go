@@ -9,10 +9,12 @@ import (
 
 func main() {
 	start := time.Now()
-	fmt.Println("Hi there use me")
+
+	fmt.Println("Hi, map range and poiters examples")
 	mapFunc()
 	rangeFunc()
 	pointerFunc()
+
 	fmt.Println(time.Since(start))
 }
 
@@ -44,8 +46,15 @@ func mapFunc() {
 	//resp, err := http.Get("https//www.google.com")
 	http.Get("https//www.google.com")
 	fmt.Println(scores)
-	log.Fatalf("INFO from LOG %s", scores)
+	// log.Fatalf("INFO from LOG %v", scores) //fatal ends execution!!
 
+	name := "alex"
+	value, isThere := scores[name]
+	if !isThere {
+		log.Printf("Problem with %s - not exists in map\n", name)
+		return
+	}
+	fmt.Printf("Great job name %v in in map!!\n", value)
 }
 
 func rangeFunc() {
@@ -72,7 +81,7 @@ func rangeFunc() {
 	}
 
 	//range with map
-	scores := map[string]int{"adam": 20, "mark": 28, "greg": 60}
+	scores := map[string]int{"adam": 20, "mark": 28, "alex": 60}
 	for key, value := range scores {
 		fmt.Printf("Key is %s, and value is %d\n", key, value)
 	}
