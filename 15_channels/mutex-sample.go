@@ -25,6 +25,7 @@ func makeWork(w *sync.WaitGroup, m *sync.Mutex, useMutex bool) {
 
 func perfromMutex() {
 	fmt.Println("\n#######################\nHi there,perfromMutex - starts here!")
+	defer fmt.Println("\n#######################\nHi there,perfromMutex - ends here!")
 
 	var wg sync.WaitGroup
 	var mutex sync.Mutex
@@ -37,7 +38,5 @@ func perfromMutex() {
 	wg.Wait()
 
 	fmt.Printf("Finally the value of i is: %d\n", i)
-
-	fmt.Println("\n#######################\nHi there,perfromMutex - ends here!")
 
 }
