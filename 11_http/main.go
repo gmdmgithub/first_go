@@ -7,21 +7,34 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
+)
+
+var (
+	// testURL - url  from API whitch simple retern what get
+	testURL = "https://httpbin.org/[REPLACER]"
+	// repl - string to replace
+	repl = "[REPLACER]"
 )
 
 func getSampleData() {
 	//####simple GET data
 	log.Println("GET METHOD CALL")
-	resp, err := http.Get("https://httpbin.org/get")
+	url := strings.Replace(testURL, repl, "get", 1)
+
+	resp, err := http.Get(url)
 	if err != nil {
 		log.Printf("Something went wrong ...%v\n", err)
-	} else {
-		result, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Printf("Body read problem ...%v\n", err)
-		}
-		fmt.Println(string(result))
+		return
 	}
+
+	result, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("Body read problem ...%v\n", err)
+		return
+	}
+	fmt.Println(string(result))
+
 }
 
 func postSampleData(url string) {
@@ -36,8 +49,12 @@ func postSampleData(url string) {
 		return
 	}
 
-	retriveResponse(http.Post(url, "application/json", bytes.NewBuffer(jsonValue)))
-
+	resp, err := retriveResponse(http.Post(url, "application/json", bytes.NewBuffer(jsonValue)))
+	if err != nil {
+		log.Println("problem with retriving data", err)
+		return
+	}
+	fmt.Println("postSampleData", resp)
 }
 
 func postWithHeader(url string) {
@@ -62,31 +79,33 @@ func postWithHeader(url string) {
 	// now we can create client request
 	client := &http.Client{}
 
-	retriveResponse(client.Do(request))
+	resp, err := retriveResponse(client.Do(request))
+	if err != nil {
+		log.Println("postWithHeader problem", err)
+	}
+	fmt.Println("postWithHeader result: ", resp)
 
 }
 
-func retriveResponse(response *http.Response, err error) string {
+func retriveResponse(response *http.Response, err error) (string, error) {
 
 	if err != nil {
 		log.Printf("Post sample post problem %v\n", err)
-		return fmt.Sprintf("%s", err)
-	} else {
-		result, err := ioutil.ReadAll(response.Body)
-
-		if err != nil {
-			log.Printf("The HTTP request failed with error %s\n", err)
-			return fmt.Sprintf("%s", err)
-		} else {
-			fmt.Println(string(result))
-			return string(result)
-		}
+		return "", err
 	}
+	result, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		log.Printf("The HTTP request failed with error %s\n", err)
+		return "", err
+	}
+	// fmt.Println(string(result))
+	return string(result), nil
 
 }
 
 func main() {
-	postURL := "https://httpbin.org/post"
+	postURL := strings.Replace(testURL, repl, "post", 1)
 	getSampleData()
 	postSampleData(postURL)
 	postWithHeader(postURL)
