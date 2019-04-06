@@ -6,19 +6,24 @@ import (
 )
 
 func main() {
-	fmt.Println("Hi there, here we have in memory database ############")
+	fmt.Println("############ Hi there, here we have in memory database")
 	defer fmt.Println("#################  Bey!!, end of in memory db")
 	db := NewStore()
-	defer db.Clear()
+	defer db.Clear() //not nessaserry but nice
 
 	db.Insert("Alex", "test")
 	db.Insert("Max", "Hi there")
 	db.Insert("Alex", "best?")
+
 	printDB(db)
+
 	db.Update("Alex", "Now update!")
 	db.Insert("John", "John is rolling!")
+
 	printDB(db)
+
 	db.Delete("Alex")
+
 	printDB(db)
 
 }
