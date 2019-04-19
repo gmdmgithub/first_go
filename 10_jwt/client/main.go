@@ -29,7 +29,7 @@ var mySignedKey = []byte("testmeifyoucanorjustuseown")
 func GenerateJWT() (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
-	claimes := token.Claims.(jwt.MapClaims)
+	claims := token.Claims.(jwt.MapClaims)
 
 	user := User{"bc4267fb-a38a-4b4a-9f98-172f0416bccb",
 		"Alex", "Smith", "alex.smith@gmail.com", "alexsmith", "password", "admin"}
@@ -50,10 +50,10 @@ func GenerateJWT() (string, error) {
 		log.Println("Partial validation passed!")
 	}
 
-	claimes["authorized"] = true
-	claimes["client"] = "Alex Smith"
-	claimes["user"] = user
-	claimes["exp"] = time.Now().Add(time.Minute * 30).Unix()
+	claims["authorized"] = true
+	claims["client"] = "Alex Smith"
+	claims["user"] = user
+	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()
 
 	tokenString, err := token.SignedString(mySignedKey)
 

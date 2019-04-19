@@ -18,7 +18,7 @@ func doTheJob(index int) {
 		defer func() {
 			<-semaphoreChan //read to release
 		}()
-		log.Println(index)
+		log.Println(index + 1)
 		time.Sleep(3 * time.Second) // simulate long lasting task
 	}()
 

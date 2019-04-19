@@ -2,16 +2,11 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
-	"sort"
 	"strconv"
-	"strings"
 )
 
 func saySomething(text string) string {
-	return "Reurn some text with:  " + text
+	return "Rerun some text with:  " + text
 }
 
 func sayMore(text string, age int) (string, int) {
@@ -23,7 +18,7 @@ func arrayExample() {
 	var ages [2]int
 	ages[0] = 37
 	ages[1] = 35
-	fmt.Println("Age of my fiend is %d", ages)
+	fmt.Printf("Age of my fiend is %d\n", ages)
 
 	//slices
 	nameSlice := []string{"Greg", "Art", "Criss", "John", "Mark"}
@@ -61,95 +56,6 @@ func checkColour(colour string) {
 	}
 }
 
-func main() {
-
-	fmt.Println("Functions in action!")
-
-	fmt.Println(saySomething("Greg"))
-	fmt.Println(sayMore("Grer", 37))
-
-	arrayExample()
-	h1 := tagFunc("H1")
-	fmt.Println(h1("Main function call"))
-
-	checkColour("green")
-	strincFunc()
-	fileOperation()
-	getInput()
-	conversingCasting()
-
-}
-
-// STRING FUNCTIONS
-func strincFunc() {
-	fmt.Println("###### Strings operations ######")
-	//string for manipulation
-	sampString := "Hi there how are you?"
-	fmt.Println("Initial string is: " + sampString)
-
-	// Returns true if phrase exists in string
-	fmt.Println(strings.Contains(sampString, "are"))
-
-	// Returns the index for the match
-	fmt.Println(strings.Index(sampString, "ar"))
-
-	// Returns the number of matches for the string
-	fmt.Println(strings.Count(sampString, "e"))
-
-	// Replaces the first letter with the second as many times as you define
-	fmt.Println(strings.Replace(sampString, "e", "E", 2))
-
-	// Return a list separating with the defined separator
-	csvString := "1,2,3,4,5,6,7,8,9;10;11"
-	//protect ; usage
-	csvString = strings.Replace(csvString, ";", ",", -1)
-
-	fmt.Println(strings.Split(csvString, ","))
-
-	listOfLetters := []string{"c", "a", "d", "b"}
-	sort.Strings(listOfLetters)
-	fmt.Println("Letters:", listOfLetters)
-
-	// Returns a string using the values passed in separated with separator
-	listOfNums := strings.Join([]string{"3", "2", "1"}, ", ")
-
-	fmt.Println(listOfNums)
-
-}
-
-// FILE I/O
-func fileOperation() {
-	fmt.Println("###### File operations ######")
-
-	// Create a file
-	file, err := os.Create("samp.txt")
-
-	// Output any errors
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		log.Print("OK file created")
-	}
-
-	// Write a string to the file
-	file.WriteString("Lets write some text to the file")
-
-	// Close the file
-	file.Close()
-
-	// Try to open the file
-	stream, err := ioutil.ReadFile("samp.txt")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Convert into a string
-	readString := string(stream)
-
-	fmt.Println(readString)
-}
-
 // EXCEPTING INPUT
 func getInput() {
 	fmt.Println("###### working with user input ######")
@@ -161,6 +67,25 @@ func getInput() {
 	fmt.Scan(&name)
 
 	fmt.Println("Hello", name)
+
+}
+
+func main() {
+
+	fmt.Println("Functions in action!")
+
+	fmt.Println(saySomething("Greg"))
+	fmt.Println(sayMore("Greg", 37))
+
+	arrayExample()
+	h1 := tagFunc("H1")
+	fmt.Println(h1("Main function call"))
+
+	checkColour("green")
+	strincFunc()
+	fileOperation()
+	getInput()
+	conversingCasting()
 
 }
 
