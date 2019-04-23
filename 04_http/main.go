@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -23,6 +24,15 @@ func handler2(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func handlerOnce() http.HandlerFunc {
+	log.Println("This code will execute only once!")
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("This code is like clousers")
+		fmt.Fprintf(w, "Hi there - back from func")
+	}
+}
+
 func main() {
 
 	// Calls for function handlers output to match the directory /
@@ -30,6 +40,9 @@ func main() {
 
 	// Calls for function handler2 output to match directory /users
 	http.HandleFunc("/users", handler2)
+
+	// Calls for function handler2 output to match directory /users
+	http.HandleFunc("/hello", handlerOnce())
 
 	port := 8081
 	// Listen to port (8081) and handle requests - response is nil (null)
