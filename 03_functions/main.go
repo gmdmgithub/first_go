@@ -83,7 +83,11 @@ func main() {
 
 	checkColour("green")
 	strincFunc()
+
 	fileOperation()
+	fileStatistics()
+	checkSum()
+
 	getInput()
 	conversingCasting()
 
