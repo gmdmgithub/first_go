@@ -73,7 +73,8 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 
 	tokenValue, err := GenerateJWT()
 	if err != nil {
-		fmt.Fprintf(w, fmt.Sprintf("crash ...., %v\n", err))
+		log.Printf("GenerateJWT problem %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	log.Print("Token generated")
@@ -88,24 +89,26 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 
 	client := &http.Client{}
 
+	//send request to the server
 	req, err := http.NewRequest("GET", "http://localhost:8001", nil)
 	if err != nil {
-		fmt.Fprintf(w, "Error: %s", err.Error())
+		log.Printf("NewRequest problem %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	req.Header.Set("Token", tokenValue)
-
+	// final sanding the request
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Fprintf(w, "Error: %s", err.Error())
+		log.Printf("client.Do(req) problem %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println(err)
-		fmt.Fprintf(w, "Error: %s", err.Error())
+		log.Printf("ReadAll problem %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
