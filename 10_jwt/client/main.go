@@ -18,7 +18,7 @@ type User struct {
 	FirstName string `json:"first_name" validate:"required"`
 	LastName  string `json:"last_name" validate:"required"`
 	Email     string `json:"email" validate:"required,email"`
-	Username  string `json:"username" validate:"required,gte=10"`
+	Username  string `json:"username" validate:"required,gte=6"`
 	Password  string `json:"password" validate:"required,gte=5"`
 	Type      string `json:"type" validate:"required,gte=3"`
 }
@@ -38,17 +38,19 @@ func GenerateJWT() (string, error) {
 	err := validate.Struct(user)
 	if err != nil {
 		log.Println(err.Error())
-	} else {
-		log.Println("Validation passed!")
+		return "", err
 	}
+
+	log.Println("Validation passed!")
 
 	//validate part
 	err = validate.StructExcept(user, "Password", "Type")
 	if err != nil {
 		log.Printf("Partial validation problem %v\t", err.Error())
-	} else {
-		log.Println("Partial validation passed!")
+		return "", err
 	}
+
+	log.Println("Partial validation passed!")
 
 	claims["authorized"] = true
 	claims["client"] = "Alex Smith"
@@ -58,7 +60,7 @@ func GenerateJWT() (string, error) {
 	tokenString, err := token.SignedString(mySignedKey)
 
 	if err != nil {
-		err = fmt.Errorf("omething went wrong ... %s", err.Error())
+		err = fmt.Errorf("something went wrong ... %s", err.Error())
 		return "", err
 	}
 
@@ -72,34 +74,39 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	tokenValue, err := GenerateJWT()
 	if err != nil {
 		fmt.Fprintf(w, fmt.Sprintf("crash ...., %v\n", err))
+		return
 	}
+	log.Print("Token generated")
 	respMap := make(map[string]string)
 	respMap["token"] = tokenValue
-	jsonString, err := json.Marshal(respMap)
-	if err != nil {
-		log.Println("cannot convert to JSON")
-		fmt.Fprintf(w, "Error: %s", err.Error())
+
+	if err := json.NewEncoder(w).Encode(respMap); err != nil {
+		log.Printf("Encode problem %v", err)
 	}
-	// fmt.Fprintf(w, string(jsonString))
-	log.Println(string(jsonString))
+
+	log.Printf("json string passed")
 
 	client := &http.Client{}
 
 	req, err := http.NewRequest("GET", "http://localhost:8001", nil)
 	if err != nil {
 		fmt.Fprintf(w, "Error: %s", err.Error())
+		return
 	}
+
 	req.Header.Set("Token", tokenValue)
 
 	res, err := client.Do(req)
 	if err != nil {
 		fmt.Fprintf(w, "Error: %s", err.Error())
+		return
 	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		fmt.Println(err)
 		fmt.Fprintf(w, "Error: %s", err.Error())
+		return
 	}
 
 	//finally replay

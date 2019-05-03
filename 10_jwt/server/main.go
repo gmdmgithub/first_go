@@ -15,37 +15,39 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 }
 
 // isAuthorized - check if request is authorized
-func isAuthorized(endpoinToCkeck func(http.ResponseWriter, *http.Request)) http.Handler {
-	log.Printf("Autorizition check is working ...")
+func isAuthorized(endpointToCheck func(http.ResponseWriter, *http.Request)) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		log.Printf("Server retriving ...")
 
 		if r.Header["Token"] != nil {
 
-			token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
-				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-					return nil, fmt.Errorf("There was an error ")
-				}
-				return mySignedKey, nil
-			})
+			token, err := jwt.Parse(r.Header["Token"][0],
+				func(token *jwt.Token) (interface{}, error) {
+					if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+						return nil, fmt.Errorf("There was an error ")
+					}
+					return mySignedKey, nil
+				})
 
 			if err != nil {
 				fmt.Fprintf(w, err.Error())
 			}
 			if token.Valid {
-				log.Printf("Token value %v", token.Claims.(jwt.MapClaims)["client"])
-				fmt.Fprintf(w, "Token value %v\n", token.Claims.(jwt.MapClaims)["user"])
-				endpoinToCkeck(w, r)
+				log.Printf("Token value %+v", token.Claims.(jwt.MapClaims)["client"])
+				user := token.Claims.(jwt.MapClaims)["user"]
+				log.Printf("User from token %+v", user)
+				endpointToCheck(w, r)
 			}
-		} else {
-			fmt.Fprint(w, "Not authorized!")
+
+			return
+
 		}
+
+		fmt.Fprint(w, "Not authorized!")
 	})
 
 }
 
-// handleRequests - hendle all requests
+// handleRequests - handle all requests
 func handleRequests() {
 
 	// http.HandleFunc("/", mainPage)
