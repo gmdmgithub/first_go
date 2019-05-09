@@ -44,9 +44,9 @@ func chcekBlocking() {
 	c <- "Marry"
 	// go close(c)
 
-	fmt.Println("Lte's send Kriss - wait 1 sek ;-)")
+	fmt.Println("Lte's send Kris - wait 1 sek ;-)")
 	time.Sleep(1 * time.Second)
-	c <- "Kriss"
+	c <- "Kris"
 
 	time.Sleep(10 * time.Millisecond)
 

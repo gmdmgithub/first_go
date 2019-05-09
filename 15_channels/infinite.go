@@ -18,8 +18,8 @@ func putToChannel(c chan int, num int) {
 	close(c)
 }
 
-// procesInfiniteWait - example how to use
-func procesInfiniteWait() {
+// processInfiniteWait - example how to use
+func processInfiniteWait() {
 	fmt.Println("Welcome to the infinite loop with channels")
 
 	c := make(chan int)

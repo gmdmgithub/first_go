@@ -4,14 +4,14 @@ import "fmt"
 
 func convertToRead(c <-chan string) {
 	//now channel is read-only
-	fmt.Println("Read chaannel welcome! Just converted to read only", <-c)
+	fmt.Println("Read channel welcome! Just converted to read only", <-c)
 }
 
 func writeChannel(c chan<- int) {
-	fmt.Printf("Tel me abour yourself %T\n", c)
+	fmt.Printf("Tel me about yourself %T\n", c)
 }
 
-func uniChannelPalyground() {
+func uniChannelPlayground() {
 	fmt.Println("\n#######################\nHi there unichannel here!")
 
 	ordinaryChannel := make(chan string)
@@ -20,7 +20,7 @@ func uniChannelPalyground() {
 	senderChannel := make(chan<- int)
 
 	// impossible - syntax error
-	// reciveChannel <- 2
+	// receiveChannel <- 2
 	fmt.Printf("What type is reciver? %T\n", reciveChannel)
 
 	go writeChannel(senderChannel)
@@ -28,7 +28,7 @@ func uniChannelPalyground() {
 	go convertToRead(ordinaryChannel)
 
 	defer close(ordinaryChannel)
-	// defer close(reciveChannel)// receive only channel cannot be closed
+	// defer close(receiveChannel)// receive only channel cannot be closed
 	defer close(senderChannel)
 
 	ordinaryChannel <- "My name is Alex"

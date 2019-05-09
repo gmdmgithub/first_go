@@ -8,7 +8,7 @@ import (
 var i int
 
 // makeWork adds value to i variable - without mutex often may modify the same value on heap - check by changing useMtex
-// mutex (lock) cause its accessible obly for one goroutine
+// mutex (lock) cause its accessible only for one goroutine
 func makeWork(w *sync.WaitGroup, m *sync.Mutex, useMutex bool) {
 
 	if useMutex {

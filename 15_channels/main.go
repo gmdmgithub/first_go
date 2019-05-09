@@ -6,15 +6,15 @@ func main() {
 	fmt.Println("Hi there channels here!")
 
 	// channelSample()
-	// chcekBlocking()
+	// checkBlocking()
 
-	// procesInfiniteWait()
+	// processInfiniteWait()
 
 	// blockingChannel()
 
-	// uniChannelPalyground()
+	// uniChannelPlayground()
 
-	// playAnonymousGorutine()
+	// playAnonymousGoroutine()
 
 	// selectDefault()
 
@@ -22,9 +22,9 @@ func main() {
 
 	// playingWithTimeout()
 
-	// waitForAllGoroutines()
+	waitForAllGoroutines()
 
-	// workerPoolPlaygound()
+	// workerPoolPlayground()
 
-	perfromMutex()
+	// perfromMutex()
 }

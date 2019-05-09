@@ -38,7 +38,7 @@ func selectDefault() {
 	fmt.Println("\n#######################\nHi there select finished here!")
 }
 
-func serviceRoroutine(c chan string) {
+func serviceGoroutine(c chan string) {
 	c <- "My name is Alex"
 }
 
@@ -49,7 +49,7 @@ func selectWitGoroutine() {
 	// var channel chan string
 	channel := make(chan string)
 
-	go serviceRoroutine(channel)
+	go serviceGoroutine(channel)
 
 	time.Sleep(10 * time.Millisecond)
 
@@ -74,17 +74,17 @@ func playingWithTimeout() {
 
 	fmt.Println("\n#######################\nHi there, playingWithTimeout starts here! - very useful!!")
 
-	channnel1 := make(chan string)
-	channnel2 := make(chan string)
+	channel1 := make(chan string)
+	channel2 := make(chan string)
 
-	go serviceWithDelay(channnel1, 3)
-	go serviceWithDelay(channnel2, 1)
+	go serviceWithDelay(channel1, 3)
+	go serviceWithDelay(channel2, 1)
 
 	select {
-	case res := <-channnel1:
-		fmt.Printf("Good job channle1 you are on time! You are: %s\n", res)
-	case res := <-channnel2:
-		fmt.Printf("Good job channle2 you are on time! You are: %s\n", res)
+	case res := <-channel1:
+		fmt.Printf("Good job channel1 you are on time! You are: %s\n", res)
+	case res := <-channel2:
+		fmt.Printf("Good job channel2 you are on time! You are: %s\n", res)
 	case <-time.After(2 * time.Second):
 		fmt.Println("No answer time-out and bye bye!")
 	}

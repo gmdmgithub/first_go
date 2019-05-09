@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-var countetr = 1 // manipulate paralel namber of executions
+var counter = 1 // manipulate parallel number of executions
 
-var semaphoreChan = make(chan struct{}, countetr)
+var semaphoreChan = make(chan struct{}, counter)
 
 func doTheJob(index int) {
 

@@ -9,9 +9,19 @@ import (
 	"time"
 )
 
-func serveMe(wg *sync.WaitGroup, number int) {
+type someStruct struct {
+	name string
+	age  int
+}
+
+func serveMe(wg *sync.WaitGroup, sS *[]someStruct, number int) {
 	time.Sleep(1 * time.Second)
 	fmt.Printf("Hi there waitgroup is called %d time\n", number)
+	s := someStruct{
+		"Alex",
+		number,
+	}
+	*sS = append(*sS, s)
 	wg.Done() //here we decrement a counter
 
 }
@@ -19,15 +29,18 @@ func serveMe(wg *sync.WaitGroup, number int) {
 func waitForAllGoroutines() {
 
 	fmt.Println("\n#######################\nHi there, wiat Group - as opposite to select starts here!")
+	defer fmt.Println("\n#######################\nHi there, wait Group - as opposite to select ends here!")
 
 	var wg sync.WaitGroup
 
+	var res []someStruct
+
 	for i := 1; i <= 5; i++ {
-		wg.Add(1) //here we increment counter - numer how many!!
-		go serveMe(&wg, i)
+		wg.Add(1) //here we increment counter - number how many!!
+		go serveMe(&wg, &res, i)
 	}
 
 	wg.Wait() //here we block
 
-	fmt.Println("\n#######################\nHi there, wiat Group - as opposite to select ednds here!")
+	fmt.Printf("End job and show results: %+v", res)
 }

@@ -13,7 +13,7 @@ func doParallel(id int) {
 	}
 }
 
-func main() {
+func pararel() {
 
 	// A go routine is a function that runs in parallel with other functions
 	// We define one by using go followed by the function name

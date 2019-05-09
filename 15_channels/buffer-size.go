@@ -10,13 +10,13 @@ func doSomething(c chan int) {
 	for i := 0; i < 3; i++ {
 		chanVal := <-c
 		calc := chanVal * 3
-		fmt.Printf("Mutiply channel %d by 3 is :%d \n", chanVal, calc)
+		fmt.Printf("Multiply channel %d by 3 is :%d \n", chanVal, calc)
 	}
 }
 
 func blockingChannel() {
 
-	fmt.Println("blockingChannel: Chcecking channel blocking and capacity")
+	fmt.Println("blockingChannel: Checking channel blocking and capacity")
 
 	c := make(chan int, 3)
 	go doSomething(c)
@@ -37,7 +37,7 @@ func blockingChannel() {
 
 	c <- 20 //block again
 
-	fmt.Println("numer of gorutine?", runtime.NumGoroutine())
+	fmt.Println("number of goroutine?", runtime.NumGoroutine())
 
 	fmt.Printf("blockingChannel: Finished ...")
 }
