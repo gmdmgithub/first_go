@@ -15,15 +15,15 @@ type someStruct struct {
 }
 
 func serveMe(wg *sync.WaitGroup, sS *[]someStruct, number int) {
-	time.Sleep(1 * time.Second)
+	defer wg.Done() //here we decrement a counter
 	fmt.Printf("Hi there waitgroup is called %d time\n", number)
 	s := someStruct{
 		"Alex",
 		number,
 	}
+	time.Sleep(1 * time.Second)
 	*sS = append(*sS, s)
-	wg.Done() //here we decrement a counter
-
+	time.Sleep(1 * time.Second)
 }
 
 func waitForAllGoroutines() {
