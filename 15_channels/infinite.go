@@ -30,7 +30,7 @@ func processInfiniteWait() {
 	for {
 		val, ok := <-c
 		if ok == false {
-			fmt.Println("Channel is closed :(")
+			fmt.Println("Channel is closed :( ")
 			break
 		} else {
 			fmt.Printf("We get the channel value: %d\n", val)

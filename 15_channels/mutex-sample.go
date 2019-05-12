@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 var i int
@@ -14,11 +15,13 @@ func makeWork(w *sync.WaitGroup, m *sync.Mutex, useMutex bool) {
 	if useMutex {
 		m.Lock()
 	}
+	time.Sleep(500 * time.Millisecond)
 	i = i + 1
 
 	if useMutex {
 		m.Unlock()
 	}
+	time.Sleep(500 * time.Millisecond)
 
 	w.Done()
 }
