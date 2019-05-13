@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"strconv"
 )
 
 func runServer(conn net.Conn) {
@@ -33,10 +34,19 @@ func runServer(conn net.Conn) {
 
 func main() {
 	log.Println("Hi server is here")
-	nc, err := net.Listen("tcp", "localhost:8989")
+	args := os.Args
+	port := "8989"
+	if len(args) > 0 {
+		_, err := strconv.Atoi(args[1])
+		if err == nil {
+			port = args[1]
+		}
+	}
+	nc, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
 	if err != nil {
 		log.Printf("Panic! problem with netcat %v", err)
 	}
+	log.Printf("Server port is %s", port)
 	conn, err := nc.Accept()
 	if err != nil {
 		log.Printf("Panic! problem with netcat %v", err)
