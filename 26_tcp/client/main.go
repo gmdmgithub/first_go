@@ -2,11 +2,11 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"net"
 	"os"
-	"strconv"
 )
 
 func runClient(conn net.Conn) {
@@ -32,18 +32,17 @@ func runClient(conn net.Conn) {
 }
 
 func main() {
-	log.Println("Hi client is here")
+	log.Println("Hi client is here - approach with flags instead of arguments")
 
 	args := os.Args
-	port := "8989"
-	if len(args) > 0 {
-		_, err := strconv.Atoi(args[1])
-		if err == nil {
-			port = args[1]
-		}
-	}
-	log.Printf("Client port is %s", port)
-	conn, err := net.Dial("tcp", fmt.Sprintf("localhost:%s", port))
+
+	sec := flag.Int("timeout", 60, "time out default 60") //!! Pointer
+	port := flag.Int("port", 8989, "port to listen default 8989")
+	flag.Parse()
+
+	log.Printf("flag ags: %v, %v and args: %v port %v\n", flag.Args(), *sec, args, *port)
+
+	conn, err := net.Dial("tcp", fmt.Sprintf("localhost:%d", *port))
 	if err != nil {
 		log.Printf("Panic! problem with netcat %v", err)
 	}
