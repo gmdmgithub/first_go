@@ -1,18 +1,23 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"time"
+)
 
-func playAnonymousGorutine() {
-
-	fmt.Println("\n#######################\nHi there anonymous here!")
-
+func playAnonymousGoroutine() {
+	start := time.Now()
+	log.Println("\n#######################\nHi there anonymous here!")
+	defer log.Printf("\n#######################\nBy anonymous! takes %v\n", time.Since(start))
 	c := make(chan string)
 
 	// launch anonymous goroutine
 	go func(c chan string) {
-		fmt.Println("Hello from anonymous" + <-c + "!")
+		time.Sleep(1 * time.Second) //do something expensive
+		log.Println("Hello from anonymous" + <-c + "!")
 	}(c)
 
-	c <- "Alex"
-	fmt.Println("\n#######################\nBy anonymous!")
+	log.Printf("Time? %v\n", time.Since(start))
+	c <- "Alex" //this will wait till go routine end
+
 }

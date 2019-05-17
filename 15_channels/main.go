@@ -6,7 +6,7 @@ func main() {
 	fmt.Println("Hi there channels here!")
 
 	// channelSample()
-	// checkBlocking()
+	checkBlocking()
 
 	// processInfiniteWait()
 
@@ -14,7 +14,7 @@ func main() {
 
 	// uniChannelPlayground()
 
-	// playAnonymousGoroutine()
+	playAnonymousGoroutine()
 
 	// selectDefault()
 

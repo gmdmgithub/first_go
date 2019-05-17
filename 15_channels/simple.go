@@ -7,7 +7,7 @@ import (
 
 // greet - just present greeting - but from channel
 func greet(c chan string) {
-	//channels have always let arrow notation <-  on the left of cannels read form channel,
+	//channels have always let arrow notation <-  on the left of channels read form channel,
 	// on the right from channel write to channel
 	fmt.Printf("Hi from channel: %s\n", <-c)
 }
@@ -33,18 +33,18 @@ func greetMany(number int, c chan string) {
 	}
 }
 
-func chcekBlocking() {
+func checkBlocking() {
 
 	c := make(chan string)
 
 	go greetMany(3, c)
-	fmt.Println("Lte's send Alex")
+	fmt.Println("Let's send Alex")
 	c <- "Alex"
-	fmt.Println("Lte's send Marry")
+	fmt.Println("Let's send Marry")
 	c <- "Marry"
 	// go close(c)
 
-	fmt.Println("Lte's send Kris - wait 1 sek ;-)")
+	fmt.Println("Let's send Kris - wait 1 sek ;-)")
 	time.Sleep(1 * time.Second)
 	c <- "Kris"
 

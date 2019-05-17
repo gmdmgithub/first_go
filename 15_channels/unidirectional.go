@@ -16,12 +16,12 @@ func uniChannelPlayground() {
 
 	ordinaryChannel := make(chan string)
 
-	reciveChannel := make(<-chan int)
+	receiveChannel := make(<-chan int)
 	senderChannel := make(chan<- int)
 
 	// impossible - syntax error
 	// receiveChannel <- 2
-	fmt.Printf("What type is reciver? %T\n", reciveChannel)
+	fmt.Printf("What type is receiver? %T\n", receiveChannel)
 
 	go writeChannel(senderChannel)
 
