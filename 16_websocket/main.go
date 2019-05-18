@@ -13,12 +13,13 @@ func main() {
 
 	server, err := socket.NewServer(nil)
 	if err != nil {
-		log.Fatal("Socket io was not initiated!: ", err)
+		log.Fatal("Socket io was not initiated! program exit", err)
 	}
 
 	server.OnConnect("/", func(s socket.Conn) error {
 		s.SetContext("")
-		log.Println("We get new root connection with id:", s.ID())
+
+		log.Println("We get new root connection with id:", s.ID(), s.URL(), s.Namespace(), s.RemoteHeader())
 		s.Emit("Hi there")
 		return nil
 	})
@@ -39,9 +40,15 @@ func main() {
 		return "recv " + msg
 	})
 
+	server.OnEvent("/room", "msg", func(s socket.Conn, msg string) string {
+		log.Printf("Room msg from socket event %s", msg)
+		s.SetContext(msg)
+		return "recv " + msg
+	})
+
 	server.OnEvent("/", "msg", func(s socket.Conn, msg string) string {
 		log.Printf("root message %s", msg)
-		s.Emit("welcome", msg)
+		s.Emit("welcome", "This is secret welcome message") //emit on and message
 		s.SetContext(msg)
 		return "recv " + msg
 	})

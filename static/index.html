@@ -11,7 +11,9 @@
 <body>
 
     <h2>Hello World - web socket test!</h2>
-    <button id="events">Click Me</button>
+    <button id="events">Click Me</button><br>
+    <button id="chat">Chat message</button><br>
+    <button id="room">Room message</button><br>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
 
@@ -35,7 +37,7 @@
         });
 
         root_socket.on("welcome", msg=>{
-            console.log("root socket welcome!");
+            console.log("root socket welcome! "+msg);
             
         })
 
@@ -50,6 +52,16 @@
         document.querySelector("#events").addEventListener("click",()=>{
             console.log("clicked");
             root_socket.emit("msg","Root socket welcome")
+        })
+
+        document.querySelector("#chat").addEventListener("click",()=>{
+            console.log("chat clicked");
+            socket.emit("msg","Chat socket welcome")
+        })
+
+        document.querySelector("#room").addEventListener("click",()=>{
+            console.log("room clicked");
+            socket_room.emit("reply","Room socket reply")
         })
         
     </script>
