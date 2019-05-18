@@ -5,50 +5,56 @@ import (
 	"log"
 	"net/http"
 
-	socketio "github.com/googollee/go-socket.io"
+	socket "github.com/googollee/go-socket.io"
 )
 
 func main() {
 	fmt.Println("Socket payground")
 
-	server, err := socketio.NewServer(nil)
+	server, err := socket.NewServer(nil)
 	if err != nil {
 		log.Fatal("Socket io was not initiated!: ", err)
-	} else {
-		log.Printf("server %+v\n", server)
 	}
 
-	server.OnConnect("/", func(s socketio.Conn) error {
+	server.OnConnect("/", func(s socket.Conn) error {
 		s.SetContext("")
-		log.Println("We get new connection with id:", s.ID())
+		log.Println("We get new root connection with id:", s.ID())
 		s.Emit("Hi there")
 		return nil
 	})
-	server.OnEvent("/chat", "reply", func(s socketio.Conn, msg string) {
-		fmt.Println("Chat notice:", msg)
+	server.OnEvent("/chat", "reply", func(s socket.Conn, msg string) {
+		fmt.Println("Chat message - replay:", msg)
 		s.Emit("reply", "have "+msg)
 	})
 
 	//first is context (namespace), second is message
-	server.OnEvent("/room", "reply", func(s socketio.Conn, msg string) {
-		fmt.Println("rooom notice:", msg)
+	server.OnEvent("/room", "reply", func(s socket.Conn, msg string) {
+		fmt.Println("room notice:", msg)
 		s.Emit("reply", "have "+msg)
 	})
 
-	server.OnEvent("/chat", "msg", func(s socketio.Conn, msg string) string {
-		log.Printf("msg from socket event %s", msg)
+	server.OnEvent("/chat", "msg", func(s socket.Conn, msg string) string {
+		log.Printf("Chat msg from socket event %s", msg)
 		s.SetContext(msg)
 		return "recv " + msg
 	})
 
-	server.OnEvent("/", "bye", func(s socketio.Conn) string {
+	server.OnEvent("/", "msg", func(s socket.Conn, msg string) string {
+		log.Printf("root message %s", msg)
+		s.Emit("welcome", msg)
+		s.SetContext(msg)
+		return "recv " + msg
+	})
+
+	server.OnEvent("/", "bye", func(s socket.Conn) string {
+
 		last := s.Context().(string)
 		s.Emit("bye", last)
 		s.Close()
 		return last
 	})
 
-	server.OnDisconnect("/", func(s socketio.Conn, msg string) {
+	server.OnDisconnect("/", func(s socket.Conn, msg string) {
 		fmt.Println("closed", msg)
 	})
 
@@ -69,7 +75,7 @@ func main() {
 	})
 
 	// start the web server
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(":8082", nil); err != nil {
 		log.Fatal("System crashed - ListenAndServe :", err)
 	}
 

@@ -10,31 +10,47 @@
 
 <body>
 
-    <h2>Hello World</h2>
+    <h2>Hello World - web socket test!</h2>
+    <button id="events">Click Me</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
 
+        
+
         // var socket = io.connect('http://localhost:8080/socket.io/');
         // first parameter set the context
+        var root_socket = io.connect("/");
         var socket = io.connect('/chat');
         //we can create as many socket as many context we have
         var socket_room = io.connect("/room");
 
         //message after context
         socket.on('reply', function(msg){
-            console.log(`Here is an aswer from backend - chat context! ${msg}`);
+            console.log(`Here is an answer from backend - chat context! ${msg}`);
         });
 
         //message after context
         socket_room.on('reply', function(msg){
-            console.log(`Here is an aswer from backend - room! ${msg}`);
+            console.log(`Here is an answer from backend - room! ${msg}`);
         });
+
+        root_socket.on("welcome", msg=>{
+            console.log("root socket welcome!");
+            
+        })
 
         socket.on('bye', function(msg){
             console.log(msg);
         });
 
-        socket.emit('msg','Hi there! beatuful message from front end')
+        socket.emit('msg','Hi there! deathful message from front end (chat)')
+        
+        socket_room.emit("msg", "Why not - welcome from room")
+
+        document.querySelector("#events").addEventListener("click",()=>{
+            console.log("clicked");
+            root_socket.emit("msg","Root socket welcome")
+        })
         
     </script>
 
