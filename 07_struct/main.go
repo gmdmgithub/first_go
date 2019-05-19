@@ -89,7 +89,7 @@ func (r Rect) Perimeter() float64 {
 	return r.width*2 + r.height*2
 }
 
-func main() {
+func mainPlayground() {
 	fmt.Println("Hi there!")
 	person := Person{firstName: "Anna", lastName: "Smith", city: "NY", gender: "f", age: 27}
 	person2 := Person{"Adam", "Jordan", "LA", "m", 43}
@@ -125,4 +125,12 @@ func main() {
 	r := Rect{5.0, 4.0}
 	fmt.Println("area of rectange s", s.Area())
 	fmt.Println("peremiter of rectange t", r.Area())
+
+}
+
+func main() {
+
+	// mainPlayground()
+	inheritance()
+	simpleJSON()
 }

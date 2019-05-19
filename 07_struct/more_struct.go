@@ -42,7 +42,7 @@ func (e Employee) SayHi() {
 		e.company, e.phone) //Yes you can split into 2 lines here.
 }
 
-func main() {
+func inheritance() {
 	mike := Student{Human{"Mike", 25, "222-222-XXX"}, "MIT", 0.00}
 	paul := Student{Human{"Paul", 26, "111-222-XXX"}, "Harvard", 100}
 	sam := Employee{Human{"Sam", 36, "444-222-XXX"}, "Golang Inc.", 1000}
