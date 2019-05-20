@@ -133,4 +133,5 @@ func main() {
 	// mainPlayground()
 	inheritance()
 	simpleJSON()
+	withBuffer()
 }
