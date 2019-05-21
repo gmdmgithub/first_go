@@ -134,4 +134,5 @@ func main() {
 	inheritance()
 	simpleJSON()
 	withBuffer()
+	playXML()
 }

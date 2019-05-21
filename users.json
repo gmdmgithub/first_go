@@ -1,0 +1,22 @@
+{
+    "users": [
+        {
+            "name": "Jane",
+            "password": "xxxxx",
+            "age": 21,
+            "driver": false
+        },
+        {
+            "name": "Alex",
+            "password": "yyyyy",
+            "age": 29,
+            "driver": true
+        },
+        {
+            "name": "Mary",
+            "password": "zzzz",
+            "age": 35,
+            "driver": false
+        }
+    ]
+}
