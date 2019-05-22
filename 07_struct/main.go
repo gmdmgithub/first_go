@@ -135,4 +135,5 @@ func main() {
 	simpleJSON()
 	withBuffer()
 	playXML()
+	playCSV()
 }

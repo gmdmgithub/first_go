@@ -7,11 +7,13 @@ import (
 )
 
 type User struct { //TODO!! - add more and remember Capitalize first letter!!
-	Name     string  `json:"name"`
-	Password string  `json:"password"`
+	Name     string  `json:"name" xml:"xml-name"`
+	Password string  `json:"password" xml:"xml-password"`
+	Email    string  `json:"email" xml:"xml-email"`
 	Age      int     `json:"age"`
 	Salary   float32 `json:"salary"`
 	Driver   bool    `json:"driver"`
+	Street   string  `json:"-" xml:"street"` //ignore in json xml only
 }
 
 type Users struct {

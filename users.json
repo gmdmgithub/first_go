@@ -3,18 +3,21 @@
         {
             "name": "Jane",
             "password": "xxxxx",
+            "email":"jane@gmail.com",
             "age": 21,
             "driver": false
         },
         {
             "name": "Alex",
             "password": "yyyyy",
+            "email":"alex@gmail.com",
             "age": 29,
             "driver": true
         },
         {
             "name": "Mary",
             "password": "zzzz",
+            "email":"mary@gmail.com",
             "age": 35,
             "driver": false
         }
