@@ -16,13 +16,13 @@ func simpleJSON() {
 		Driver:   false,
 	}
 
-	log.Printf("User is %v", usr)
+	// log.Printf("User is %v", usr)
 	// var buf = new(bytes.Buffer)
 
 	var b bytes.Buffer // A Buffer needs no initialization.
 
 	usr.Write(&b)
-	log.Printf("Buffer is %s", b.String())
+	// log.Printf("Buffer is %s", b.String())
 
 	// io.Copy(os.Stdout, buf)
 
@@ -40,5 +40,5 @@ func withBuffer() {
 	if err := json.NewEncoder(buf).Encode(usr); err != nil {
 		log.Printf("Problem with decode %v", err)
 	}
-	log.Printf("%s", buf)
+	// log.Printf("%s", buf)
 }

@@ -46,7 +46,7 @@ func readJSON(name string) (u *[]User, err error) {
 		return nil, err
 	}
 
-	log.Printf("%v", usrL)
+	// log.Printf("%v", usrL)
 
 	return &usrL.UserL, nil
 

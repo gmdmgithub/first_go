@@ -1,0 +1,4 @@
+name,password,email,age,salary,driver
+Jane,xxxxx,jane@gmail.com,21,0,false
+alex@gmail.com,29,0,true,Alex,yyyyy
+35,0,false,Mary,zzzz,mary@gmail.com
