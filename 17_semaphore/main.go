@@ -19,7 +19,7 @@ func doTheJob(index int) {
 			<-semaphoreChan //read to release
 		}()
 		log.Println(index + 1)
-		time.Sleep(3 * time.Second) // simulate long lasting task
+		time.Sleep(1 * time.Second) // simulate long lasting task
 	}()
 
 }
@@ -31,4 +31,6 @@ func main() {
 	for i := 0; i < 20; i++ {
 		doTheJob(i)
 	}
+
+	benchmarkMux(40, 20)
 }
