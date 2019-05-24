@@ -17,7 +17,7 @@ func NewMutexBlocker() *MutexBlocker {
 	return &MutexBlocker{locker: &sync.Mutex{}}
 }
 
-func (m *MutexBlocker) Read() string {
+func (m *MutexBlocker) Read() interface{} {
 	m.locker.Lock()
 	defer m.locker.Unlock()
 	time.Sleep(60 * time.Millisecond)
@@ -56,9 +56,9 @@ func benchmarkMux(workers int, workload int) {
 
 	for i := 0; i < workload; i++ {
 		wg.Add(1)
-		writer()
+		go writer()
 		wg.Add(1)
-		reader()
+		go reader()
 	}
 
 	wg.Wait()
