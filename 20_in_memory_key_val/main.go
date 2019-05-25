@@ -5,11 +5,16 @@ import (
 	"log"
 )
 
+type user struct {
+	name string
+	age  int
+}
+
 func main() {
 	fmt.Println("############ Hi there, here we have in memory database")
 	defer fmt.Println("#################  Bey!!, end of in memory db")
 	db := NewStore()
-	defer db.Clear() //not nessaserry but nice
+	defer db.Clear() //not necessary but nice
 
 	db.Insert("Alex", "test")
 	db.Insert("Max", "Hi there")
@@ -19,6 +24,9 @@ func main() {
 
 	db.Update("Alex", "Now update!")
 	db.Insert("John", "John is rolling!")
+	db.Insert("Morgan", 20)
+	db.Insert("Sara", 18.3)
+	db.Insert("Megan", user{"Frank", 12})
 
 	printDB(db)
 
@@ -28,20 +36,20 @@ func main() {
 
 }
 
-// KeyVal - struct to keep inmemory DB
+// KeyVal - struct to keep in-memory DB
 type KeyVal struct {
-	kv map[string]string
+	kv map[string]interface{}
 }
 
 // NewStore - create new DB store
 func NewStore() *KeyVal {
 	return &KeyVal{
-		kv: map[string]string{},
+		kv: make(map[string]interface{}),
 	}
 }
 
 // Insert - insert a db
-func (db *KeyVal) Insert(k, v string) {
+func (db *KeyVal) Insert(k string, v interface{}) {
 	if _, ok := db.kv[k]; ok {
 		log.Println("Key exists, no insert", k)
 		return
@@ -70,7 +78,7 @@ func printDB(db *KeyVal) {
 }
 
 // Update - update keyVal db
-func (db *KeyVal) Update(k, v string) {
+func (db *KeyVal) Update(k string, v interface{}) {
 	if _, ok := db.kv[k]; !ok {
 		log.Println("no key to update", k)
 		return
