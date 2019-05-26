@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 )
 
@@ -41,4 +42,24 @@ func withBuffer() {
 		log.Printf("Problem with decode %v", err)
 	}
 	// log.Printf("%s", buf)
+}
+
+type Truck struct {
+	Name     string
+	Make     string
+	MaxSpeed int
+}
+
+func streamJSON() {
+	ins := `[{"Name":"X3","Make":"BMW","MaxSpeed":300},{"Name":"A6","Make":"Audi","MaxSpeed":330}]`
+
+	in := `{"Name":"Golf","Make":"WW","MaxSpeed":220}`
+
+	trs := []Truck{}
+	json.Unmarshal([]byte(ins), &trs)
+	fmt.Printf("Results are: %+v\n", trs)
+
+	tr := Truck{}
+	json.Unmarshal([]byte(in), &tr)
+	fmt.Printf("Result is: %+v\n", tr)
 }
