@@ -110,4 +110,5 @@ func main() {
 	postSampleData(postURL)
 	postWithHeader(postURL)
 
+	openbeanRequest()
 }
