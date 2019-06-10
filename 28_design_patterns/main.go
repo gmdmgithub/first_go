@@ -11,4 +11,5 @@ func main() {
 	creationalPattern()
 	structuralPattern()
 	behavioralPattern()
+	dependencyInjection()
 }
