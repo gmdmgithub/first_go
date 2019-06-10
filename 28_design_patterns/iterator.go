@@ -5,6 +5,7 @@ import (
 	"log"
 )
 
+// Iterator - sample iterator struct tusk is an heart object
 type Iterator struct {
 	tasks    []string
 	position int
@@ -31,10 +32,14 @@ func behavioralPattern() {
 
 }
 
+// GetExamples - take some examples form somewhere
 func GetExamples() Iterator {
 	return Iterator{
+		// joke - just to demostrate they are static
 		tasks: []string{
 			"say hello",
+			"say nice to meet you",
+			"say see you soon",
 			"say goodbye",
 		},
 	}
@@ -45,6 +50,7 @@ var ErrEOF = errors.New("EOF")
 
 // Next will return the next task in the slice, or ErrEOF
 func (t *Iterator) Next() (int, string, error) {
+
 	t.position++
 	if t.position > len(t.tasks) {
 		return t.position, "", ErrEOF
