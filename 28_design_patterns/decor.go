@@ -11,7 +11,7 @@ type MyDecorFunc func(count int) (ok bool)
 
 func structuralPattern() {
 	log.Println("## Second is Structural pattern: Decorator pattern is an example")
-	defer log.Println("-- By from Structural")
+	defer log.Println("-- Bye from Structural")
 	//in real go programing the http handler func is a good example like isAuthorized, loggin ..
 	DecorFunc(MyFunc)
 }

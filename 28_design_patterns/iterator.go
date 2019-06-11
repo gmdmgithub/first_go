@@ -14,7 +14,7 @@ type Iterator struct {
 func behavioralPattern() {
 	log.Println("## Third is Behavioral pattern: Iterator pattern is an example (io.Read - or result in db query)")
 	log.Println("## Accesses elements sequentially, without exposing underlying representation")
-	defer log.Println("-- By from Behavioral")
+	defer log.Println("-- Bye from Behavioral")
 
 	tasks := GetExamples()
 	// infinite loop can be used

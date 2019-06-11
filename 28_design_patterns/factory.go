@@ -11,7 +11,7 @@ import (
 
 func creationalPattern() {
 	log.Println("## First is Creational pattern: Factory is an example")
-	defer log.Println("-- By from Creational")
+	defer log.Println("-- Bye from Creational")
 
 	// s1 := rand.NewSource(time.Now().UnixNano())
 	// r1 := rand.New(s1)

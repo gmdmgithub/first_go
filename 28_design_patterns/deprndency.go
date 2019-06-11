@@ -10,7 +10,7 @@ import (
 // Creational: Dependency Injection (Constructor) pattern
 func dependencyInjection() {
 	log.Println("## Creational: Dependency Injection (Constructor) pattern")
-	defer log.Println("-- By from Dependency Injection")
+	defer log.Println("-- Bye from Dependency Injection")
 	s := NewMyService(os.Stderr)
 	s.WriteHello("world")
 }
