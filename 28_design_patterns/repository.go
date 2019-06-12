@@ -18,7 +18,7 @@ func repositoryPattern() {
 			Name: "First project",
 		},
 	)
-	newProject.Name = "First project - updated!"
+	newProject.Description = "First project - successfully updated!"
 	p, err := projectsRepo.Store(newProject)
 	if err != nil {
 		log.Printf("We got the problem %v", err)
