@@ -1,12 +1,12 @@
 # Simple web apps but dokerized
 
-## create htpp sample - exposed on some port (8081 in the sapmle)
+## create htpp sample - exposed on some port (8081 in the sample)
 
 ## expose in docker
 
 1. Create a Dockerfile
 
-2. Run docker build
+2. Run docker build - dot at the end is important
 
 ``` bush
 $ docker build -t <NAME> .
