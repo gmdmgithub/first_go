@@ -14,6 +14,8 @@ $ docker build -t <NAME> .
 3. Check if the image was created
 ``` bush
 $ docker images
+to remove image
+$ docker rmi <NAME>  (if force necessary use '-f' flag)
 ```
 4. Run the app in a docker (first in interactive mode)
 ``` bush
