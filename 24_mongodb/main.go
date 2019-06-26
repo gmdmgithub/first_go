@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// Currency - struct for currency object
 type Currency struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty"`
 	Code         string             `bson:"code,omitempty"`
@@ -20,31 +22,24 @@ type Currency struct {
 	Base         bool               `bson:"base,omitempty"`
 }
 
-func main() {
+type mongoDB struct {
+	client *mongo.Client
+	dbName string
+}
 
-	// create a new context
+var md *mongoDB
+
+func getCurrencies() (currs []Currency) {
 	ctx := context.Background()
 
-	// create a mongo client
-	// create a mongo client
-	client, err := mongo.Connect(
-		ctx,
-		options.Client().ApplyURI("mongodb://localhost:27017/"),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// disconnects from mongo
-	defer client.Disconnect(ctx)
-
-	db := client.Database("budget")
+	db := md.client.Database(md.dbName)
 	col := db.Collection("currencies")
 
 	// find all documents
 	cursor, err := col.Find(ctx, bson.D{})
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil
 	}
 
 	fmt.Printf("cursor is done %+v\n", cursor)
@@ -54,17 +49,64 @@ func main() {
 		var cur Currency
 		// decode the document
 		if err := cursor.Decode(&cur); err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return nil
 		}
 		fmt.Printf("currency: %+v\n", cur)
 		curs = append(curs, cur)
 	}
 
-	log.Printf("currencies %+v", curs)
-
 	// check if the cursor encountered any errors while iterating
 	if err := cursor.Err(); err != nil {
+		log.Println(err)
+		return nil
+	}
+	return curs
+}
+
+func main() {
+
+	// create a new context
+	ctx := context.Background()
+	md = &mongoDB{}
+	md.dbName = "budget"
+
+	// create a mongo client
+	db, err := mongo.Connect(
+		ctx,
+		options.Client().ApplyURI("mongodb://localhost:27017/"),
+	)
+	if err != nil {
 		log.Fatal(err)
 	}
+	md.client = db
+	// disconnects from mongo
+	defer md.client.Disconnect(ctx)
 
+	// log.Printf("currencies %+v", getCurrencies())
+
+	http.HandleFunc("/", homePage)
+
+	http.HandleFunc("/currencies", currencies)
+
+	port := ":8082"
+	log.Printf("Server is running on port %s", port)
+	http.ListenAndServe(port, nil)
+
+}
+
+func homePage(w http.ResponseWriter, r *http.Request) {
+	log.Println("### Home page")
+	defer log.Println("### Home page bye")
+	fmt.Fprintf(w, "Hi there use /currencies (GET) to get currencies or POST to submit currencies")
+}
+
+func currencies(w http.ResponseWriter, r *http.Request) {
+
+	switch r.Method {
+	case "GET":
+		fmt.Fprintf(w, "list of currencies - comming soon")
+	case "POST":
+		fmt.Fprintf(w, "saving currency - comming soon")
+	}
 }

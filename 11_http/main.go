@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	// testURL - url  from API whitch simple retern what get
+	// testURL - url  from API which simple return what get
 	testURL = "https://httpbin.org/[REPLACER]"
 	// repl - string to replace
 	repl = "[REPLACER]"
