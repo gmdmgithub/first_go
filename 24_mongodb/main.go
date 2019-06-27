@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -24,16 +25,17 @@ type Currency struct {
 
 type mongoDB struct {
 	client *mongo.Client
+	db     *mongo.Database
 	dbName string
+	ctx    context.Context
 }
 
 var md *mongoDB
 
 func getCurrencies() (currs []Currency) {
-	ctx := context.Background()
+	ctx := md.ctx
 
-	db := md.client.Database(md.dbName)
-	col := db.Collection("currencies")
+	col := md.db.Collection("currencies")
 
 	// find all documents
 	cursor, err := col.Find(ctx, bson.D{})
@@ -80,6 +82,8 @@ func main() {
 		log.Fatal(err)
 	}
 	md.client = db
+	md.db = db.Database(md.dbName)
+	md.ctx = ctx
 	// disconnects from mongo
 	defer md.client.Disconnect(ctx)
 
@@ -105,8 +109,38 @@ func currencies(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		fmt.Fprintf(w, "list of currencies - comming soon")
+		w.WriteHeader(http.StatusOK)
+		w.Header().Add("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(getCurrencies()); err != nil {
+			log.Printf(" json Problem ... %v\n", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		// w.Write([]byte(fmt.Sprintf("list of currencies - comming soon")))
+		// fmt.Fprintf(w, "list of currencies - comming soon")
+
 	case "POST":
-		fmt.Fprintf(w, "saving currency - comming soon")
+		var currency Currency
+		if err := json.NewDecoder(r.Body).Decode(&currency); err != nil {
+			log.Printf("Problem with decoding body %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		col := md.db.Collection("currencies")
+
+		res, err := col.InsertOne(md.ctx, currency)
+		if err != nil {
+			log.Printf("Problem saving %T ... %+v", currency, err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		currency.ID = res.InsertedID.(primitive.ObjectID)
+
+		w.WriteHeader(http.StatusOK)
+		if err := json.NewEncoder(w).Encode(currency); err != nil {
+			log.Printf("Encode problem %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+
+		// fmt.Fprintf(w, "saving currency - comming soon")
 	}
 }
