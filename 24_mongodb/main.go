@@ -108,39 +108,54 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 func currencies(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
-	case "GET":
+	case http.MethodGet:
 		w.WriteHeader(http.StatusOK)
 		w.Header().Add("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(getCurrencies()); err != nil {
+		crs := getCurrencies()
+		if err := json.NewEncoder(w).Encode(crs); err != nil {
 			log.Printf(" json Problem ... %v\n", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 		// w.Write([]byte(fmt.Sprintf("list of currencies - comming soon")))
 		// fmt.Fprintf(w, "list of currencies - comming soon")
 
-	case "POST":
-		var currency Currency
-		if err := json.NewDecoder(r.Body).Decode(&currency); err != nil {
-			log.Printf("Problem with decoding body %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		col := md.db.Collection("currencies")
+	case http.MethodPost:
+		postCur(w, r)
 
-		res, err := col.InsertOne(md.ctx, currency)
-		if err != nil {
-			log.Printf("Problem saving %T ... %+v", currency, err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		currency.ID = res.InsertedID.(primitive.ObjectID)
+	default:
+		w.WriteHeader(http.StatusBadRequest)
+		w.Header().Set("Content-Type", "application/json")
+		// fmt.Fprintf(w, fmt.Sprintf("Unsupported method was called %v", r.Method))
+		messages := make(map[string]string)
+		messages["message"] = "Unsupported method was called"
+		json.NewEncoder(w).Encode(messages)
 
-		w.WriteHeader(http.StatusOK)
-		if err := json.NewEncoder(w).Encode(currency); err != nil {
-			log.Printf("Encode problem %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+		log.Printf("Unsupported method was called %v", r.Method)
 
-		// fmt.Fprintf(w, "saving currency - comming soon")
+	}
+
+}
+
+func postCur(w http.ResponseWriter, r *http.Request) {
+	var currency Currency
+	if err := json.NewDecoder(r.Body).Decode(&currency); err != nil {
+		log.Printf("Problem with decoding body %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	col := md.db.Collection("currencies")
+
+	res, err := col.InsertOne(md.ctx, currency)
+	if err != nil {
+		log.Printf("Problem saving %T ... %+v", currency, err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	currency.ID = res.InsertedID.(primitive.ObjectID)
+
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(currency); err != nil {
+		log.Printf("Encode problem %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
