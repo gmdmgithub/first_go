@@ -17,7 +17,7 @@ $ docker images
 to remove image
 $ docker rmi <NAME>  (if force necessary use '-f' flag)
 ```
-4. Run the app in a docker (first in interactive mode)
+4. Run the app in a docker (first in interactive mode) first port is port to be expose in docker second default in app
 ``` bush
 docker run -p 8080:8081 -it <NAME>
 ```
@@ -29,3 +29,15 @@ docker run -p 8080:8081 -d <NAME>
 ``` bush
 docker ps
 ```
+7. Other useful commands
+a. Get logs of the container
+docker logs <containerId>
+
+b.Stop running container
+docker stop <containerId>
+
+c.Restart exited container
+docker restart <containerId>
+
+d.Remove stopped container
+docker rm <containerId>
