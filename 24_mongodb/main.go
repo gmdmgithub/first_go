@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -68,6 +70,17 @@ func getCurrencies() (currs []Currency) {
 
 func main() {
 
+	dbstring := "mongodb://localhost:27017/"
+	arguments := os.Args[1:]
+	docker := flag.Bool("docker", false, "if the docker mode is set")
+	flag.Parse()
+
+	log.Println(arguments, *docker)
+
+	if *docker {
+		dbstring = "mongodb://mongo:27017/go-web-mongo"
+	}
+
 	// create a new context
 	ctx := context.Background()
 	md = &mongoDB{}
@@ -76,7 +89,7 @@ func main() {
 	// create a mongo client
 	db, err := mongo.Connect(
 		ctx,
-		options.Client().ApplyURI("mongodb://localhost:27017/"),
+		options.Client().ApplyURI(dbstring),
 	)
 	if err != nil {
 		log.Fatal(err)

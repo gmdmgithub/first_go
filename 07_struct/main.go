@@ -133,7 +133,7 @@ func main() {
 	// mainPlayground()
 	inheritance()
 	simpleJSON()
-	streamJSON()
+	streamJSONUnmarshal()
 	withBuffer()
 	playXML()
 	playCSV()
